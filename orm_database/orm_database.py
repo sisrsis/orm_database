@@ -13,6 +13,45 @@ class PostgreSQL:
         self.db = await asyncpg.connect(host=self.host, user=self.user, password=self.password, database=self.database)
 
 
+    async  def teble_create_BaseModel(self,table:str , class_BaseModel):
+        query = f"CREATE TABLE {table} ("
+        print(class_BaseModel.model_json_schema())
+        result=class_BaseModel.model_json_schema()
+        print(result['required'])
+        for a in result['required']:
+            data = result['properties'][a]
+            print(data)
+            try : 
+                maxLength = data['maxLength']
+                match data['type']:
+                    case 'integer':
+                        types = 'int'
+                    case 'boolean':
+                        types = 'bool'
+                    case 'number':
+                        types = 'float'
+                    case 'string':
+                        types = 'varchar'
+                uint = str(a)+" "+types+'('+str(maxLength)+')'
+                query = query  + " " + uint + " ,"
+            except :
+                match data['type']:
+                    case 'integer':
+                        types = 'int'
+                    case 'boolean':
+                        types = 'bool'
+                    case 'number':
+                        types = 'float'
+                    case 'string':
+                        types = 'varchar'
+                uint = str(a)+" "+types
+                query = query  + " " + uint + " ,"
+        query = query[:-1]
+        query = query + ")"
+        await self.db.execute(query)
+        await self.db.close()
+
+
     async def teble_create(self, table: str, field: dict):
         query = f"CREATE TABLE {table} ("
         filed_key = list(field.keys())

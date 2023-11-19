@@ -3,7 +3,7 @@ from setuptools import setup ,find_packages
 
 setup(
    name='orm_database',
-   version='0.1',
+   version='0.1.1',
    description='This module is written to launch your programs with any database you want in the shortest time ',
    license="MIT",
    author='SISRSIS',
