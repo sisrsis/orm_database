@@ -10,6 +10,6 @@ setup(
    author_email='virussisrsis@gmail.com',
    url="https://github.com/sisrsis/orm-database",
    packages=find_packages(),  #same as name
-   install_requires=['asyncpg','motor'], #external packages as dependencies
+   install_requires=['asyncpg','motor','mariadb'], #external packages as dependencies
 
 )
