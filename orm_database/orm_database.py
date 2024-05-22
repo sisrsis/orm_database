@@ -1,5 +1,30 @@
 import motor.motor_asyncio
 import asyncpg
+import mariadb
+import sys
+
+class MariaDB:
+    def __init__(self, host:str,port:int,user:str,password:str,database:str):
+        self.host=host
+        self.port=port
+        self.user=user
+        self.password=password
+        self.database=database
+    
+
+    async def  start(self):
+        try:
+            self.connections = mariadb.connect(
+            user="db_user",
+            password="db_user_passwd",
+            host="localhost",
+            database="employees")
+
+        except:
+            print("Error connecting maraidb")
+            sys.exit(1)
+
+
 
 
 class PostgreSQL:
@@ -15,12 +40,9 @@ class PostgreSQL:
 
     async  def teble_create_BaseModel(self,table:str , class_BaseModel):
         query = f"CREATE TABLE {table} ("
-        print(class_BaseModel.model_json_schema())
         result=class_BaseModel.model_json_schema()
-        print(result['required'])
         for a in result['required']:
             data = result['properties'][a]
-            print(data)
             try : 
                 maxLength = data['maxLength']
                 match data['type']:
